@@ -33,3 +33,4 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 >>>>>>> 05b0cc5 (first commit)
+node_modules

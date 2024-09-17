@@ -1,16 +1,37 @@
-import { Box, Checkbox, Text } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+import { Checkbox, Flex, Text } from "@chakra-ui/react";
 
-type TasksProps = {
+type TaskProps = {
+  id: number;
   name: string;
+  isDone: boolean;
+  index: number;
+  toggleIsDone: (id: number, index: number) => void;
+  destroyTask: (index: number) => void;
 };
 
-const Task = (props: TasksProps) => {
+const Task = ({
+  id,
+  name,
+  isDone,
+  index,
+  toggleIsDone,
+  destroyTask,
+}: TaskProps) => {
   return (
-    <Box mb="16px">
-      <Checkbox colorScheme="blue" size="lg">
-        <Text>{props.name}</Text>
+    <Flex mb="16px" justifyContent="space-between" alignItems="center">
+      <Checkbox
+        colorScheme="blue"
+        size="lg"
+        isChecked={isDone}
+        onChange={() => {
+          toggleIsDone(id, index);
+        }}
+      >
+        <Text>{name}</Text>
       </Checkbox>
-    </Box>
+      <CloseIcon onClick={() => destroyTask(id)} />
+    </Flex>
   );
 };
 
