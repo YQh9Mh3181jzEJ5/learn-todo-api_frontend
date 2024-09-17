@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import Task from "./components/Task";
 
 type Tasks = {
+  id: number;
   name: string;
   isDone: boolean;
 };
@@ -35,10 +36,15 @@ const App = () => {
     fetch();
   };
 
-  const toggleIsDone = (index: number) => {
-    const tasksCopy = [...tasks];
-    tasksCopy[index].isDone = !tasksCopy[index].isDone;
-    setTasks(tasksCopy);
+  const destroyTask = async (id: number) => {
+    await axios.delete(`http://localhost:3010/tasks/${id}`);
+    fetch();
+  };
+
+  const toggleIsDone = async (id: number, index: number) => {
+    const isDone = tasks[index].isDone;
+    await axios.put(`http://localhost:3010/tasks/${id}`, { is_done: !isDone });
+    fetch();
   };
 
   useEffect(() => {
@@ -69,11 +75,13 @@ const App = () => {
           <CheckboxGroup>
             {tasks.map((task, index) => (
               <Task
+                id={task.id}
                 key={index}
                 index={index}
                 name={task.name}
                 isDone={task.isDone}
                 toggleIsDone={toggleIsDone}
+                destroyTask={destroyTask}
               />
             ))}
           </CheckboxGroup>
